@@ -29,6 +29,14 @@ public class ProductController {
         return new ResponseEntity<>(service.create(product), HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/product/{id}")
+    public ResponseEntity<ResponseModel> deleteProduct(@PathVariable Long id){
+        ResponseModel responseModel = service.delete(id);
+        System.out.println(responseModel);
+        return new ResponseEntity<>(responseModel, HttpStatus.OK);
+    }
+
+
     @GetMapping("/categories/{categoryIds}/products::orderBy:{orderBy}::sortingDirection:{sortingDirection}")
     public ResponseEntity<ResponseModel> getByCategories(
             @PathVariable List<Long> categoryIds,
