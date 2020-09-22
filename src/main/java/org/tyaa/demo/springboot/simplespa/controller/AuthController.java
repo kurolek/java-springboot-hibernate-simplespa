@@ -3,6 +3,7 @@ package org.tyaa.demo.springboot.simplespa.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.tyaa.demo.springboot.simplespa.model.ResponseModel;
@@ -18,14 +19,22 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @GetMapping("/roles")
-    public ResponseEntity<ResponseModel> getAll() {
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/admin/roles")
+    public ResponseEntity<ResponseModel> getAllRoles() {
         return new ResponseEntity<>(authService.getAllRoles(), HttpStatus.OK);
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/admin/role")
     public ResponseEntity<ResponseModel> createRole(@RequestBody RoleModel roleModel) {
         return new ResponseEntity<>(authService.createRole(roleModel), HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/roles")
+    public ResponseEntity<ResponseModel> getAll() {
+        return new ResponseEntity<>(authService.getAllRoles(), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/role/{id}")
